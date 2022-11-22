@@ -1,14 +1,16 @@
 import React from 'react';
 import './App.css';
-import PlanetsContext from './context/PlanetsContext';
+import PlanetsProvider from './context/PlanetsProvider';
 import MainPage from './pages/MainPage';
 
 function App() {
   return (
-    <PlanetsContext.Provider value={ { teste: 'testado' } }>
+    <PlanetsProvider>
+
       <div>PLANETS APP.js</div>
       <MainPage />
-    </PlanetsContext.Provider>
+
+    </PlanetsProvider>
   );
 }
 
