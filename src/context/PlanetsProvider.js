@@ -1,11 +1,12 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+// import React, { useEffect, useMemo, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import planetsAPI from '../services/planetsAPI';
 import PlanetsContext from './PlanetsContext';
 
 function PlanetsProvider({ children }) {
   const [data, setData] = useState([]);
-  console.log(data);
+  const [filteredData, setFilteredData] = useState([]);
 
   useEffect(() => {
     const getAPI = async () => {
@@ -18,18 +19,48 @@ function PlanetsProvider({ children }) {
       });
       console.log(planets);
       setData(planets);
+      setFilteredData(planets);
     };
 
     getAPI();
+    // [setData]
   }, []);
 
-  // solução por Gabriela Ventura. Na monitoria da noite não conseguimos descobrir pq nao funciona sem isso.
-  const dataMemo = useMemo(() => ({
+  // const omniFilter = useCallback(
+  //   ({ target: { id, value } }) => (filteredData.length > 0
+  //     ? setFilteredData(filteredData.filter((planet) => planet[id].includes(value)))
+  //     : setFilteredData(data.filter((planet) => planet[id].includes(value)))),
+  //   [filteredData, data],
+  // );
+
+  const omniFilter = ({ target: { id, value } }) => (
+    setFilteredData(data.filter((planet) => planet[id].includes(value))));
+  // const omniFilter = ({ target: { id, value } }) => (filteredData.length > 0
+  //   ? setFilteredData(filteredData.filter((planet) => planet[id].includes(value)))
+  //   : setFilteredData(data.filter((planet) => planet[id].includes(value))));
+
+  // [filteredData, data],
+
+  //     ? setFilteredData(filteredData.filter((planet) => planet[type].includes(value)))
+  //     : setFilteredData(data.filter((planet) => planet[type].includes(value))));
+  // }, [filteredData, data]);
+  // const filterName = ({ value }) => {
+  //   const fiteredByName = data.filter((planet) => planet.name.includes(value));
+  // };
+
+  // solução por Gabriela Ventura. Esclarecido na monitoria da manhã com Aline. 23/11
+  // const dataMemo = useMemo(() => ({
+  //   data, omniFilter,
+  // }), [data, omniFilter]);
+
+  const value = {
+    omniFilter,
     data,
-  }), [data]);
+    filteredData,
+  };
 
   return (
-    <PlanetsContext.Provider value={ dataMemo }>
+    <PlanetsContext.Provider value={ value }>
       {children}
     </PlanetsContext.Provider>
   );

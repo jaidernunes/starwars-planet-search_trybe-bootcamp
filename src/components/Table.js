@@ -2,8 +2,8 @@ import React, { useContext } from 'react';
 import PlanetsContext from '../context/PlanetsContext';
 
 export default function Table() {
-  const { data } = useContext(PlanetsContext);
-  console.log(data);
+  const { filteredData } = useContext(PlanetsContext);
+  console.log(filteredData);
   return (
     // <div>TABLE.js</div>
     <table>
@@ -24,9 +24,9 @@ export default function Table() {
           <th>URL</th>
         </tr>
       </thead>
-      { data && (
+      { filteredData && (
         <tbody>
-          {data.map((planet) => (
+          {filteredData.map((planet) => (
             <tr key={ planet.name }>
               <td>{planet.name}</td>
               <td>{planet.rotation_period}</td>
