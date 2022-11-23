@@ -49,7 +49,7 @@ function PlanetsProvider({ children }) {
 
   useEffect(() => {
     const eachNumFilter = () => {
-      let tempData = filteredData;
+      let tempData = data;
       console.log(tempData);
 
       tempData = tempData.filter((planet) => planet.name.includes(nameFilter));
@@ -59,20 +59,23 @@ function PlanetsProvider({ children }) {
         console.log(numFilter.comparisonFilter);
         if (numFilter.comparisonFilter === 'maior que') {
           tempData = tempData.filter(
-            (planet) => planet[numFilter.columnFilter] > numFilter.valueFilter
-            && planet[numFilter.columnFilter] !== 'unknown',
+            (planet) => (Number(planet[numFilter.columnFilter])
+            > Number(numFilter.valueFilter)
+            && planet[numFilter.columnFilter] !== 'unknown'),
           );
         }
         if (numFilter.comparisonFilter === 'menor que') {
           tempData = tempData.filter(
-            (planet) => planet[numFilter.columnFilter] < numFilter.valueFilter
-            && planet[numFilter.columnFilter] !== 'unknown',
+            (planet) => (Number(planet[numFilter.columnFilter])
+            < Number(numFilter.valueFilter)
+            && planet[numFilter.columnFilter] !== 'unknown'),
           );
         }
         if (numFilter.comparisonFilter === 'igual a') {
           tempData = tempData.filter(
-            (planet) => planet[numFilter.columnFilter] === numFilter.valueFilter
-            && planet[numFilter.columnFilter] !== 'unknown',
+            (planet) => (Number(planet[numFilter.columnFilter])
+            === Number(numFilter.valueFilter)
+            && planet[numFilter.columnFilter] !== 'unknown'),
           );
         }
       });
