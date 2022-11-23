@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import planetsAPI from '../services/planetsAPI';
 import PlanetsContext from './PlanetsContext';
 
 function PlanetsProvider({ children }) {
   const [data, setData] = useState([]);
+  console.log(data);
 
   useEffect(() => {
     const getAPI = async () => {
@@ -20,10 +21,15 @@ function PlanetsProvider({ children }) {
     };
 
     getAPI();
-  }, [setData]);
+  }, []);
+
+  // solução por Gabriela Ventura. Na monitoria da noite não conseguimos descobrir pq nao funciona sem isso.
+  const dataMemo = useMemo(() => ({
+    data,
+  }), [data]);
 
   return (
-    <PlanetsContext.Provider value={ data }>
+    <PlanetsContext.Provider value={ dataMemo }>
       {children}
     </PlanetsContext.Provider>
   );
