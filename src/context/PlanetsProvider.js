@@ -16,6 +16,8 @@ function PlanetsProvider({ children }) {
   const [valueFilter, setValueFilter] = useState('0');
   const [numericFilter, setNumericFilter] = useState([]);
   const [filtrableColumns, setFiltrableColumns] = useState(allNumericColumns);
+  const [sortColumn, setSortColumn] = useState('population');
+  const [sortType, setSortType] = useState('');
 
   useEffect(() => {
     const getAPI = async () => {
@@ -33,23 +35,6 @@ function PlanetsProvider({ children }) {
 
     getAPI();
   }, []);
-
-  // const omniFilter = ({ target: { id, value } }) => (
-  //   setFilteredData(data.filter((planet) => planet[id].includes(value))));
-  // const eachNumFilter = () => {
-  //   let tempData = filteredData;
-  //   numericFilter.forEach((numFilter) => {
-  //     tempData = tempData.filter((planet) => planet[numFilter.columnFilter]
-  //   > numFilter.valueFilter);
-  //   });
-  //   setFilteredData(tempData);
-  // };
-  // solução por Gabriela Ventura. Esclarecido na monitoria da manhã com Aline. 23/11
-  // const dataMemo = useMemo(() => ({
-  //   data, omniFilter,
-  // }), [data, omniFilter]);
-
-  // columnFilter, comparisonFilter, valueFilter
 
   useEffect(() => {
     const eachNumFilter = () => {
@@ -90,8 +75,20 @@ function PlanetsProvider({ children }) {
     eachNumFilter();
   }, [nameFilter, numericFilter, filtrableColumns]);
 
+  const sortTable = () => {
+    const unknowns = filteredData.filter((column) => column[sortColumn] === 'unknown');
+    const numerics = filteredData.filter((column) => column[sortColumn] !== 'unknown');
+    if (sortType === 'ASC') {
+      numerics.sort((a, b) => Number(a[sortColumn]) - Number(b[sortColumn]));
+      setFilteredData([...numerics, ...unknowns]);
+    }
+    if (sortType === 'DESC') {
+      numerics.sort((b, a) => Number(a[sortColumn]) - Number(b[sortColumn]));
+      setFilteredData([...numerics, ...unknowns]);
+    }
+  };
+
   const providerProps = {
-    // omniFilter,
     data,
     filteredData,
     nameFilter,
@@ -107,7 +104,9 @@ function PlanetsProvider({ children }) {
     filtrableColumns,
     setFiltrableColumns,
     allNumericColumns,
-    // eachNumFilter,
+    setSortColumn,
+    setSortType,
+    sortTable,
   };
 
   return (

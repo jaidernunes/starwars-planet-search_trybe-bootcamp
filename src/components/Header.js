@@ -2,12 +2,13 @@ import React, { useContext } from 'react';
 import PlanetsContext from '../context/PlanetsContext';
 
 export default function Header() {
-  const { allNumericColumns, setNameFilter,
+  const { allNumericColumns, setNameFilter, sortTable,
     setNumericFilter, numericFilter,
     setColumnFilter, columnFilter,
     setComparisonFilter, comparisonFilter,
     setValueFilter, valueFilter,
-    filtrableColumns, setFiltrableColumns } = useContext(PlanetsContext);
+    filtrableColumns, setFiltrableColumns,
+    setSortColumn, setSortType } = useContext(PlanetsContext);
   // const [columnFilter, setColumnFilter] = useState('population');
   // const [comparisonFilter, setComparisonFilter] = useState('>');
   // const [valueFilter, setValueFilter] = useState(null);
@@ -99,6 +100,45 @@ export default function Header() {
         REMOVER FILTROS
 
       </button>
+
+      <select
+        data-testid="column-sort"
+        name="columnSort"
+        id="columnSort"
+        onChange={ ({ target }) => setSortColumn(target.value) }
+      >
+        {allNumericColumns.map((column) => (
+          <option key={ `sort${column}` }>{column}</option>
+        ))}
+      </select>
+      <label htmlFor="sortAsc">
+        <input
+          type="radio"
+          name="sortType"
+          id="sortAsc"
+          data-testid="column-sort-input-asc"
+          onClick={ () => setSortType('ASC') }
+        />
+        Ascendente
+      </label>
+      <label htmlFor="sortDesc">
+        <input
+          type="radio"
+          name="sortType"
+          id="sortDesc"
+          data-testid="column-sort-input-desc"
+          onClick={ () => setSortType('DESC') }
+        />
+        Descendente
+      </label>
+      <button
+        type="button"
+        data-testid="column-sort-button"
+        onClick={ sortTable }
+      >
+        ORDENAR
+      </button>
+
       <div>
         {numericFilter.map((filter, i) => (
           <div
