@@ -68,7 +68,7 @@ export default function Header() {
           name="valueFilter"
           id="valueFilter"
           data-testid="value-filter"
-          // value={ valueFilter }
+          value={ valueFilter }
           onChange={ ({ target }) => setValueFilter(target.value) }
         />
 
