@@ -5,6 +5,9 @@ import planetsAPI from '../services/planetsAPI';
 import PlanetsContext from './PlanetsContext';
 
 function PlanetsProvider({ children }) {
+  const allNumericColumns = ['population', 'orbital_period', 'diameter',
+    'rotation_period', 'surface_water'];
+
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [nameFilter, setNameFilter] = useState('');
@@ -12,6 +15,7 @@ function PlanetsProvider({ children }) {
   const [comparisonFilter, setComparisonFilter] = useState('maior que');
   const [valueFilter, setValueFilter] = useState('0');
   const [numericFilter, setNumericFilter] = useState([]);
+  const [filtrableColumns, setFiltrableColumns] = useState(allNumericColumns);
 
   useEffect(() => {
     const getAPI = async () => {
@@ -22,7 +26,7 @@ function PlanetsProvider({ children }) {
         delete planet.residents;
         return planet;
       });
-      console.log(planets);
+      // console.log(planets);
       setData(planets);
       setFilteredData(planets);
     };
@@ -50,13 +54,12 @@ function PlanetsProvider({ children }) {
   useEffect(() => {
     const eachNumFilter = () => {
       let tempData = data;
-      console.log(tempData);
+      // console.log(tempData);
 
       tempData = tempData.filter((planet) => planet.name.includes(nameFilter));
 
       numericFilter.forEach((numFilter) => {
-        console.log(numFilter.comparisonFilter);
-        console.log(numFilter.comparisonFilter);
+        // console.log(numFilter.comparisonFilter);
         if (numFilter.comparisonFilter === 'maior que') {
           tempData = tempData.filter(
             (planet) => (Number(planet[numFilter.columnFilter])
@@ -80,11 +83,12 @@ function PlanetsProvider({ children }) {
         }
       });
 
+      setColumnFilter(filtrableColumns[0]);
       setFilteredData(tempData);
-      console.log(tempData);
+      // console.log(tempData);
     };
     eachNumFilter();
-  }, [nameFilter, numericFilter]);
+  }, [nameFilter, numericFilter, filtrableColumns]);
 
   const providerProps = {
     // omniFilter,
@@ -100,6 +104,9 @@ function PlanetsProvider({ children }) {
     setValueFilter,
     valueFilter,
     setNumericFilter,
+    filtrableColumns,
+    setFiltrableColumns,
+    allNumericColumns,
     // eachNumFilter,
   };
 
