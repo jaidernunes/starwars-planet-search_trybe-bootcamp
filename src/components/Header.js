@@ -10,6 +10,8 @@ export default function Header() {
   // const [columnFilter, setColumnFilter] = useState('population');
   // const [comparisonFilter, setComparisonFilter] = useState('>');
   // const [valueFilter, setValueFilter] = useState(null);
+  const filteredColumns = numericFilter.map((numFilter) => numFilter.columnFilter);
+  console.log(filteredColumns);
 
   return (
     <>
@@ -31,11 +33,16 @@ export default function Header() {
           value={ columnFilter }
           onChange={ ({ target }) => setColumnFilter(target.value) }
         >
-          <option value="population">population</option>
-          <option value="orbital_period">orbital_period</option>
-          <option value="diameter">diameter</option>
-          <option value="rotation_period">rotation_period</option>
-          <option value="surface_water">surface_water</option>
+          {!filteredColumns.includes('population')
+          && <option value="population">population</option>}
+          {!filteredColumns.includes('orbital_period')
+          && <option value="orbital_period">orbital_period</option>}
+          {!filteredColumns.includes('diameter')
+          && <option value="diameter">diameter</option>}
+          {!filteredColumns.includes('rotation_period')
+          && <option value="rotation_period">rotation_period</option>}
+          {!filteredColumns.includes('surface_water')
+          && <option value="surface_water">surface_water</option>}
         </select>
 
         <select
