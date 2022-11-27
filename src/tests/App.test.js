@@ -234,13 +234,3 @@ describe('I am your test 1', () => {
     expect(orderedPlanets[9]).toHaveTextContent('Dagobah');
   });
 });
-
-
-// rotation_period
-// orbital_period
-// diameter
-// climate
-// gravity
-// terrain
-// surface_water
-// population
