@@ -18,7 +18,6 @@ export default function Header() {
 
   return (
     <>
-      <div>HEADER.js</div>
       <form action="">
         <input
           type="text"
