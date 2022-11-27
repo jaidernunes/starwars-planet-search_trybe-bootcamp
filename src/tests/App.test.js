@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import App from '../App';
 import testData from './mocks/testData'
-import fetchAPI from '../services/planetsAPI'
+// import fetchAPI from '../services/planetsAPI'
 import PlanetsProvider from '../context/PlanetsProvider'
 import userEvent from '@testing-library/user-event';
 
@@ -75,203 +75,164 @@ describe('I am your test 1', () => {
       expect(alderaan).toBeInTheDocument();
     });
 
-    it('checks if the  remove filters button and the > filter are working as expected', async () => {
-      render(
-        <PlanetsProvider>
-          <App />
-        </PlanetsProvider>)
-
-        const tatooine = await screen.findByRole('cell', {  name: /tatooine/i});
-        const alderaan = await screen.findByRole('cell', {  name: /alderaan/i});
-        const yavinIV = await screen.findByRole('cell', {  name: /yavin iv/i});
-        const numberInput = screen.getByRole('spinbutton');
-        const filterBtn = screen.getByRole('button', {  name: /filtrar/i});
-        const removeAllFiltersBtn = screen.getByRole('button', {  name: /remover filtros/i});
-        
-        expect(tatooine).toBeInTheDocument();
-        expect(alderaan).toBeInTheDocument();
-        expect(yavinIV).toBeInTheDocument();
-        
-        userEvent.clear(numberInput);
-        userEvent.type(numberInput, '200000');
-        userEvent.click(filterBtn);
-        
-        expect(alderaan).toBeInTheDocument();
-        expect(tatooine).not.toBeInTheDocument();
-        
-        userEvent.click(removeAllFiltersBtn);
-
-        const tatooine2 = await screen.findByText(/tatooine/i);
-
-        expect(tatooine2).toBeInTheDocument();
-    });
+  it('checks if the  remove filters button and the > filter are working as expected', async () => {
+    render(
+      <PlanetsProvider>
+        <App />
+      </PlanetsProvider>)
+      const tatooine = await screen.findByRole('cell', {  name: /tatooine/i});
+      const alderaan = await screen.findByRole('cell', {  name: /alderaan/i});
+      const yavinIV = await screen.findByRole('cell', {  name: /yavin iv/i});
+      const numberInput = screen.getByRole('spinbutton');
+      const filterBtn = screen.getByRole('button', {  name: /filtrar/i});
+      const removeAllFiltersBtn = screen.getByRole('button', {  name: /remover filtros/i});
       
-    it('checks if the < filter is working as expected', async () => {
-      render(
-        <PlanetsProvider>
-          <App />
-        </PlanetsProvider>)
-
-        const tatooine = await screen.findByRole('cell', {  name: /tatooine/i});
-        const alderaan = await screen.findByRole('cell', {  name: /alderaan/i});
-        const yavinIV = await screen.findByRole('cell', {  name: /yavin iv/i});
-        const numberInput = screen.getByRole('spinbutton');
-        const filterBtn = screen.getByRole('button', {  name: /filtrar/i});
-        const columnFilter = screen.getByTestId('column-filter');
-        const comparisonFilter = screen.getByTestId('comparison-filter');
-        
-        expect(tatooine).toBeInTheDocument();
-        expect(alderaan).toBeInTheDocument();
-        expect(yavinIV).toBeInTheDocument();
-        
-        userEvent.selectOptions(columnFilter, 'orbital_period');
-        userEvent.selectOptions(comparisonFilter, 'menor que');
-        userEvent.clear(numberInput);
-        userEvent.type(numberInput, '400');
-        userEvent.click(filterBtn);
-        
-        expect(tatooine).toBeInTheDocument();
-        expect(alderaan).toBeInTheDocument();
-        expect(yavinIV).not.toBeInTheDocument();
-    });
+      expect(tatooine).toBeInTheDocument();
+      expect(alderaan).toBeInTheDocument();
+      expect(yavinIV).toBeInTheDocument();
       
-    it('checks if the === filter is working as expected', async () => {
-      render(
-        <PlanetsProvider>
-          <App />
-        </PlanetsProvider>)
-
-        const tatooine = await screen.findByRole('cell', {  name: /tatooine/i});
-        const alderaan = await screen.findByRole('cell', {  name: /alderaan/i});
-        const yavinIV = await screen.findByRole('cell', {  name: /yavin iv/i});
-        const numberInput = screen.getByRole('spinbutton');
-        const filterBtn = screen.getByRole('button', {  name: /filtrar/i});
-        const columnFilter = screen.getByTestId('column-filter');
-        const comparisonFilter = screen.getByTestId('comparison-filter');
-        
-        expect(tatooine).toBeInTheDocument();
-        expect(alderaan).toBeInTheDocument();
-        expect(yavinIV).toBeInTheDocument();
-        
-        userEvent.selectOptions(columnFilter, 'rotation_period');
-        userEvent.selectOptions(comparisonFilter, 'igual a');
-        userEvent.clear(numberInput);
-        userEvent.type(numberInput, '24');
-        userEvent.click(filterBtn);
-        
-        expect(tatooine).not.toBeInTheDocument();
-        expect(alderaan).toBeInTheDocument();
-        expect(yavinIV).toBeInTheDocument();
-    });
+      userEvent.clear(numberInput);
+      userEvent.type(numberInput, '200000');
+      userEvent.click(filterBtn);
       
-    it('checks if the numeric filters work correctly when applying more than one', async () => {
-      render(
-        <PlanetsProvider>
-          <App />
-        </PlanetsProvider>)
-
-        const tatooine = await screen.findByRole('cell', {  name: /tatooine/i});
-        const alderaan = await screen.findByRole('cell', {  name: /alderaan/i});
-        const yavinIV = await screen.findByRole('cell', {  name: /yavin iv/i});
-        const numberInput = screen.getByRole('spinbutton');
-        const filterBtn = screen.getByRole('button', {  name: /filtrar/i});
-        const columnFilter = screen.getByTestId('column-filter');
-        const comparisonFilter = screen.getByTestId('comparison-filter');
-        
-        expect(tatooine).toBeInTheDocument();
-        expect(alderaan).toBeInTheDocument();
-        expect(yavinIV).toBeInTheDocument();
-        
-        userEvent.selectOptions(columnFilter, 'rotation_period');
-        userEvent.selectOptions(comparisonFilter, 'igual a');
-        userEvent.clear(numberInput);
-        userEvent.type(numberInput, '24');
-        userEvent.click(filterBtn);
-        
-        expect(tatooine).not.toBeInTheDocument();
-        expect(alderaan).toBeInTheDocument();
-        expect(yavinIV).toBeInTheDocument();
-        
-        userEvent.clear(numberInput);
-        userEvent.type(numberInput, '1000');
-        userEvent.click(filterBtn);
-        
-        expect(tatooine).not.toBeInTheDocument();
-        expect(alderaan).not.toBeInTheDocument();
-        expect(yavinIV).toBeInTheDocument();
-    });
+      expect(alderaan).toBeInTheDocument();
+      expect(tatooine).not.toBeInTheDocument();
       
-    //   it('checks if the numeric filters are working as expected', () => {
-    //     render(
-    //       <PlanetsProvider>
-    //       <App />
-    //     </PlanetsProvider>)
+      userEvent.click(removeAllFiltersBtn);
+      const tatooine2 = await screen.findByText(/tatooine/i);
+      expect(tatooine2).toBeInTheDocument();
+  });
+    
+  it('checks if the < filter is working as expected', async () => {
+    render(
+      <PlanetsProvider>
+        <App />
+      </PlanetsProvider>)
+      const tatooine = await screen.findByRole('cell', {  name: /tatooine/i});
+      const alderaan = await screen.findByRole('cell', {  name: /alderaan/i});
+      const yavinIV = await screen.findByRole('cell', {  name: /yavin iv/i});
+      const numberInput = screen.getByRole('spinbutton');
+      const filterBtn = screen.getByRole('button', {  name: /filtrar/i});
+      const columnFilter = screen.getByTestId('column-filter');
+      const comparisonFilter = screen.getByTestId('comparison-filter');
+      
+      expect(tatooine).toBeInTheDocument();
+      expect(alderaan).toBeInTheDocument();
+      expect(yavinIV).toBeInTheDocument();
+      
+      userEvent.selectOptions(columnFilter, 'orbital_period');
+      userEvent.selectOptions(comparisonFilter, 'menor que');
+      userEvent.clear(numberInput);
+      userEvent.type(numberInput, '400');
+      userEvent.click(filterBtn);
+      
+      expect(tatooine).toBeInTheDocument();
+      expect(alderaan).toBeInTheDocument();
+      expect(yavinIV).not.toBeInTheDocument();
+  });
+    
+  it('checks if the === filter is working as expected', async () => {
+    render(
+      <PlanetsProvider>
+        <App />
+      </PlanetsProvider>)
+      const tatooine = await screen.findByRole('cell', {  name: /tatooine/i});
+      const alderaan = await screen.findByRole('cell', {  name: /alderaan/i});
+      const yavinIV = await screen.findByRole('cell', {  name: /yavin iv/i});
+      const numberInput = screen.getByRole('spinbutton');
+      const filterBtn = screen.getByRole('button', {  name: /filtrar/i});
+      const columnFilter = screen.getByTestId('column-filter');
+      const comparisonFilter = screen.getByTestId('comparison-filter');
+      
+      expect(tatooine).toBeInTheDocument();
+      expect(alderaan).toBeInTheDocument();
+      expect(yavinIV).toBeInTheDocument();
+      
+      userEvent.selectOptions(columnFilter, 'rotation_period');
+      userEvent.selectOptions(comparisonFilter, 'igual a');
+      userEvent.clear(numberInput);
+      userEvent.type(numberInput, '24');
+      userEvent.click(filterBtn);
+      
+      expect(tatooine).not.toBeInTheDocument();
+      expect(alderaan).toBeInTheDocument();
+      expect(yavinIV).toBeInTheDocument();
+  });
+    
+  it('checks if the numeric filters work correctly when applying more than one', async () => {
+    render(
+      <PlanetsProvider>
+        <App />
+      </PlanetsProvider>)
+      const tatooine = await screen.findByRole('cell', {  name: /tatooine/i});
+      const alderaan = await screen.findByRole('cell', {  name: /alderaan/i});
+      const yavinIV = await screen.findByRole('cell', {  name: /yavin iv/i});
+      const numberInput = screen.getByRole('spinbutton');
+      const filterBtn = screen.getByRole('button', {  name: /filtrar/i});
+      const columnFilter = screen.getByTestId('column-filter');
+      const comparisonFilter = screen.getByTestId('comparison-filter');
+      
+      expect(tatooine).toBeInTheDocument();
+      expect(alderaan).toBeInTheDocument();
+      expect(yavinIV).toBeInTheDocument();
+      
+      userEvent.selectOptions(columnFilter, 'rotation_period');
+      userEvent.selectOptions(comparisonFilter, 'igual a');
+      userEvent.clear(numberInput);
+      userEvent.type(numberInput, '24');
+      userEvent.click(filterBtn);
+      
+      expect(tatooine).not.toBeInTheDocument();
+      expect(alderaan).toBeInTheDocument();
+      expect(yavinIV).toBeInTheDocument();
+      
+      userEvent.clear(numberInput);
+      userEvent.type(numberInput, '1000');
+      userEvent.click(filterBtn);
+      
+      expect(tatooine).not.toBeInTheDocument();
+      expect(alderaan).not.toBeInTheDocument();
+      expect(yavinIV).toBeInTheDocument();
+  });
+    
+  it('checks if the asc and desc order functions are working as expected', async () => {
+    render(
+    <PlanetsProvider>
+      <App />
+    </PlanetsProvider>)
 
-    // });
+    let orderedPlanets = [];
+    const asc = screen.getByText(/ascendente/i);
+    const desc = screen.getByText(/Descendente/i);
+    const orderBtn = screen.getByRole('button', {  name: /ordenar/i});
+    const tatooine = await screen.findByRole('cell', {  name: /tatooine/i});
+    const allPlanets = () => orderedPlanets = screen.getAllByTestId('planet-name');
+    // const alderaan = await screen.findByRole('cell', {  name: /alderaan/i});
+    // const yavinIV = await screen.findByRole('cell', {  name: /yavin iv/i});
 
-    // it('checks if the numeric filters are working as expected', () => {
-    //   render(
-    //     <PlanetsProvider>
-    //       <App />
-    //     </PlanetsProvider>)
-    // });
+    expect(tatooine).toBeInTheDocument();
+    allPlanets();
 
-    // it('checks if the numeric filters are working as expected', () => {
-    //   render(
-    //     <PlanetsProvider>
-    //       <App />
-    //     </PlanetsProvider>)
-    // });
+    expect(orderedPlanets[0]).toHaveTextContent('Tatooine');
+    expect(orderedPlanets[1]).toHaveTextContent('Alderaan');
+    expect(orderedPlanets[9]).toHaveTextContent('Kamino');
 
-    // it('checks if the numeric filters are working as expected', () => {
-    //   render(
-    //     <PlanetsProvider>
-    //       <App />
-    //     </PlanetsProvider>)
-    // });
+    userEvent.click(asc);
+    userEvent.click(orderBtn);
+    allPlanets();
+      
+    expect(orderedPlanets[0]).toHaveTextContent('Yavin IV');
+    expect(orderedPlanets[1]).toHaveTextContent('Tatooine');
+    expect(orderedPlanets[9]).toHaveTextContent('Dagobah');
 
-    // it('checks if the numeric filters are working as expected', () => {
-    //   render(
-    //     <PlanetsProvider>
-    //       <App />
-    //     </PlanetsProvider>)
-    // });
+    userEvent.click(desc);
+    userEvent.click(orderBtn);
+    allPlanets();
 
-    // it('checks if the numeric filters are working as expected', () => {
-    //   render(
-    //     <PlanetsProvider>
-    //       <App />
-    //     </PlanetsProvider>)
-    // });
-
-    // it('checks if the numeric filters are working as expected', () => {
-    //   render(
-    //     <PlanetsProvider>
-    //       <App />
-    //     </PlanetsProvider>)
-    // });
-
-    // it('checks if the numeric filters are working as expected', () => {
-    //   render(
-    //     <PlanetsProvider>
-    //       <App />
-    //     </PlanetsProvider>)
-    // });
-
-    // it('checks if the numeric filters are working as expected', () => {
-    //   render(
-    //     <PlanetsProvider>
-    //       <App />
-    //     </PlanetsProvider>)
-    // });
-
-    // it('checks if the numeric filters are working as expected', () => {
-    //   render(
-    //     <PlanetsProvider>
-    //       <App />
-    //     </PlanetsProvider>)
-    // });
-
+    expect(orderedPlanets[0]).toHaveTextContent('Coruscant');
+    expect(orderedPlanets[1]).toHaveTextContent('Naboo');
+    expect(orderedPlanets[9]).toHaveTextContent('Dagobah');
+  });
 });
 
 
